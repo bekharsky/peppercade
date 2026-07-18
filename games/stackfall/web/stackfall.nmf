@@ -1,0 +1,7 @@
+{
+  "program": {
+    "arm": {
+      "url": "stackfall_arm.nexe"
+    }
+  }
+}

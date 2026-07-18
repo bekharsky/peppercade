@@ -1,0 +1,23 @@
+pascii 1
+namespace stackfall_assets
+output games/stackfall/src/stackfall_assets.h
+
+sprite kBlock
+size 12 12
+padding 0 0
+anchor 0.5 0.5
+blend opaque
+pixels
+|    ....    |
+|  .^^^^^^.  |
+| .^^!!!!!^. |
+|.^========^.|
+|.^==%%====^.|
+|.^========^.|
+|.^========^.|
+|.^=====::::.|
+| .^====:::. |
+|  .^_____.  |
+|   .____.   |
+|    ....    |
+end

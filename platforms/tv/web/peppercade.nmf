@@ -1,0 +1,7 @@
+{
+  "program": {
+    "arm": {
+      "url": "peppercade_arm.nexe"
+    }
+  }
+}

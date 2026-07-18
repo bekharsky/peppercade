@@ -1,0 +1,23 @@
+pascii 1
+namespace neon_serpent_assets
+output games/neon-serpent/src/neon_serpent_assets.h
+
+sprite kBall
+size 12 12
+padding 0 0
+anchor 0.5 0.5
+blend opaque
+pixels
+|    ....    |
+|  .^^^^^^.  |
+| .^^!!!!!^. |
+|.^========^.|
+|.^==%%====^.|
+|.^========^.|
+|.^========^.|
+|.^=====::::.|
+| .^====:::. |
+|  .^_____.  |
+|   .____.   |
+|    ....    |
+end

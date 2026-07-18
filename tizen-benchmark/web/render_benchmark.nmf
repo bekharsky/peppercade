@@ -1,0 +1,7 @@
+{
+  "program": {
+    "arm": {
+      "url": "render_benchmark_arm.nexe"
+    }
+  }
+}

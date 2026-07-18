@@ -1,0 +1,23 @@
+pascii 1
+namespace lightline_assets
+output games/lightline/src/lightline_assets.h
+
+sprite kBall
+size 12 12
+padding 0 0
+anchor 0.5 0.5
+blend opaque
+pixels
+|    ....    |
+|  .^^^^^^.  |
+| .^^!!!!!^. |
+|.^========^.|
+|.^==%%====^.|
+|.^========^.|
+|.^========^.|
+|.^=====::::.|
+| .^====:::. |
+|  .^_____.  |
+|   .____.   |
+|    ....    |
+end

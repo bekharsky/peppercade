@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Native Tizen Tetris</title>
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: #05070f;
+      }
+
+      embed {
+        width: 100vw;
+        height: 100vh;
+        display: block;
+        outline: 0;
+      }
+
+      #fallback {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        color: #b8fff0;
+        font: 30px sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="fallback">Loading native Tetris...</div>
+    <embed id="nacl-module"
+           src="stackfall.nmf"
+           type="application/x-nacl"
+           tabindex="0">
+    <script>
+      var module = document.getElementById('nacl-module');
+      module.addEventListener('load', function () {
+        document.getElementById('fallback').style.display = 'none';
+        module.focus();
+      });
+      module.addEventListener('error', function () {
+        document.getElementById('fallback').textContent = 'Native module failed to load';
+      });
+      window.addEventListener('load', function () {
+        module.focus();
+      });
+    </script>
+  </body>
+</html>

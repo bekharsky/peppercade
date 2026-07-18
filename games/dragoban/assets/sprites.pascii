@@ -1,0 +1,40 @@
+pascii 1
+namespace dragoban_assets
+output games/dragoban/src/dragoban_assets.h
+
+sprite kEgg
+size 20 10
+padding 1 1
+anchor 0.5 0.5
+blend opaque
+pixels
+|        ....        |
+|      ..^^^^..      |
+|     .^^!!!!^^.     |
+|    .^========^.    |
+|   .^===%%=====^.   |
+|   .^==========^.   |
+|   .^====::::==^.   |
+|    .^________^.    |
+|      .______.      |
+|        ....        |
+end
+
+sprite kRobot
+size 20 11
+padding 1 1
+anchor 0.5 0.5
+blend opaque
+pixels
+|        ....        |
+|      ..^^^^..      |
+|     .^======^.     |
+|    .^==@@@@==^.    |
+|    .^==^^^^==^.    |
+|     .^======^.     |
+|   ..^========^..   |
+|  .^^^==%%%%==^^^.  |
+|  .^====::::====^.  |
+|   .^^.______.^^.   |
+|   ....______....   |
+end

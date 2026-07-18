@@ -1,0 +1,7 @@
+{
+  "program": {
+    "arm": {
+      "url": "brickbound_arm.nexe"
+    }
+  }
+}

@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Tizen Render Benchmark</title>
+    <style>
+      html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: #05070f;
+      }
+      embed {
+        width: 100vw;
+        height: 100vh;
+        display: block;
+        outline: 0;
+      }
+      #status {
+        position: fixed;
+        left: 24px;
+        top: 24px;
+        color: #b8fff0;
+        font: 24px monospace;
+        background: rgba(0,0,0,.45);
+        padding: 12px 16px;
+        z-index: 10;
+        white-space: pre;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="status">loading render benchmark</div>
+    <embed id="nacl-module"
+           src="render_benchmark.nmf"
+           type="application/x-nacl"
+           tabindex="0">
+    <script>
+      var endpoint = "http://192.168.3.194:8787/metrics";
+      var module = document.getElementById("nacl-module");
+      var statusEl = document.getElementById("status");
+      var startedAt = Date.now();
+      var lastMessageAt = 0;
+
+      function sendMetric(payload) {
+        lastMessageAt = Date.now();
+        var modeName = payload.mode === "gles2"
+          ? "gles2"
+          : (Number(payload.mode) === 0 ? "full" : "dirty");
+        var sprites = payload.sprites || payload.balls || 0;
+        statusEl.textContent = "fps " + payload.fps + " " + modeName + "\n" +
+          "p50 " + Math.round(payload.p50FrameMs || 0) +
+          " p95 " + Math.round(payload.p95FrameMs || 0) + " ms\n" +
+          "sprites " + sprites + " quads " + (payload.quads || 0) + "\n" +
+          "LEFT/RIGHT count  UP max  DOWN 64";
+
+        var img = new Image();
+        img.src = endpoint +
+          "?app=" + encodeURIComponent(payload.app || "render-benchmark") +
+          "&type=metrics" +
+          "&mode=" + encodeURIComponent(payload.mode) +
+          "&fps=" + encodeURIComponent(payload.fps) +
+          "&frameMs=" + encodeURIComponent(payload.frameMs) +
+          "&uploadPixels=" + encodeURIComponent(payload.uploadPixels) +
+          "&drawCalls=" + encodeURIComponent(payload.drawCalls) +
+          "&width=" + encodeURIComponent(payload.width) +
+          "&height=" + encodeURIComponent(payload.height) +
+          "&balls=" + encodeURIComponent(sprites) +
+          "&quads=" + encodeURIComponent(payload.quads || 0) +
+          "&p50FrameMs=" + encodeURIComponent(payload.p50FrameMs || 0) +
+          "&p95FrameMs=" + encodeURIComponent(payload.p95FrameMs || 0) +
+          "&t=" + Date.now();
+      }
+
+      function sendHeartbeat(label) {
+        var img = new Image();
+        img.src = endpoint +
+          "?app=render-benchmark" +
+          "&type=heartbeat" +
+          "&label=" + encodeURIComponent(label) +
+          "&uptime=" + encodeURIComponent(Math.floor((Date.now() - startedAt) / 1000)) +
+          "&t=" + Date.now();
+      }
+
+      module.addEventListener("load", function () {
+        statusEl.textContent = "nacl loaded\nwaiting metrics";
+        sendHeartbeat("nacl-load");
+        module.focus();
+      });
+      module.addEventListener("error", function () {
+        statusEl.textContent = "native module failed\n" + (Date.now() - startedAt) + " ms";
+        sendHeartbeat("nacl-error");
+      });
+      module.addEventListener("message", function (event) {
+        try {
+          sendHeartbeat("nacl-message");
+          var payload = typeof event.data === "string"
+            ? JSON.parse(event.data)
+            : event.data;
+          if (payload && payload.type === "metrics") sendMetric(payload);
+        } catch (e) {
+          statusEl.textContent = "metric parse failed\n" + String(e);
+        }
+      });
+      window.addEventListener("load", function () {
+        module.focus();
+        statusEl.textContent = "page loaded\nwaiting nacl";
+        sendHeartbeat("page-load");
+      });
+      setInterval(function () {
+        sendHeartbeat(lastMessageAt ? "metrics-ok" : "waiting-metrics");
+        if (lastMessageAt) return;
+        statusEl.textContent = "waiting metrics\n" + Math.floor((Date.now() - startedAt) / 1000) + "s";
+      }, 1000);
+    </script>
+  </body>
+</html>
